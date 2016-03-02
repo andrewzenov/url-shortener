@@ -31,7 +31,7 @@ public class Link implements Serializable {
 	private Long clickCount;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tag_link", joinColumns = @JoinColumn(name = "tag_id") , inverseJoinColumns = @JoinColumn(name = "link_id") )
+	@JoinTable(name = "tag_link", joinColumns = @JoinColumn(name = "short_url") , inverseJoinColumns = @JoinColumn(name = "tag_id") )
 	private Set<Tag> tags;
 
 	public String getShortUrl() {
@@ -74,4 +74,21 @@ public class Link implements Serializable {
 		this.tags = tags;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Link link = (Link) o;
+		return com.google.common.base.Objects.equal(shortUrl, link.shortUrl) &&
+				com.google.common.base.Objects.equal(sourceUrl, link.sourceUrl) &&
+				com.google.common.base.Objects.equal(description, link.description) &&
+				com.google.common.base.Objects.equal(clickCount, link.clickCount) &&
+				com.google.common.base.Objects.equal(tags, link.tags);
+	}
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(shortUrl, sourceUrl, description, clickCount, tags);
+	}
 }

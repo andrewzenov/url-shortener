@@ -8,7 +8,7 @@ public interface Dao<T,K> {
 
     List<T> getAll();
 
-    void delete(K id);
+    void delete(T entity);
 
     void insert(T user);
 
