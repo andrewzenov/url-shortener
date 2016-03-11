@@ -10,8 +10,8 @@ public interface Dao<T,K> {
 
     void delete(T entity);
 
-    void insert(T user);
+    void insert(T entity);
 
-    void update(T user);
+    void update(T entity);
 
 }
