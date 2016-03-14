@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Андрей on 10.03.2016.
  */
-public interface UserRestService {
+public interface IUserController {
 
     public List<User> getUsers();
 
