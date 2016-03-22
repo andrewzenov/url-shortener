@@ -97,7 +97,7 @@ public class TestTagDao {
         tagDao.insert(tag);
         int size = tagDao.getAll().size();
         Tag tagDb = tagDao.getAll().get(0);
-        tagDao.delete(tagDb);
+        tagDao.delete(tagDb.getId());
 
         Assert.assertEquals(size - 1, tagDao.getAll().size());
     }

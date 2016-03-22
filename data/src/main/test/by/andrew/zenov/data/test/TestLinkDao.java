@@ -126,7 +126,7 @@ public class TestLinkDao {
         linkDao.insert(link);
         int size = linkDao.getAll().size();
         Link linkDb = linkDao.getAll().get(0);
-        linkDao.delete(linkDb);
+        linkDao.delete(linkDb.getShortUrl());
 
         Assert.assertEquals(size - 1, linkDao.getAll().size());
     }

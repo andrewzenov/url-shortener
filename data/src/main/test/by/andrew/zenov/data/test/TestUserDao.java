@@ -101,7 +101,7 @@ public class TestUserDao {
         userDao.insert(user);
         int size = userDao.getAll().size();
         User userDb = userDao.getAll().get(0);
-        userDao.delete(userDb);
+        userDao.delete(userDb.getId());
 
         Assert.assertEquals(size - 1, userDao.getAll().size());
     }

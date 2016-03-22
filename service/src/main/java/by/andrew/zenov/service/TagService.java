@@ -13,6 +13,8 @@ public interface TagService {
 
     List<Tag> getAll();
 
+    void delete(Long id);
+    
     void delete(Tag tag);
 
     void insert(Tag tag);

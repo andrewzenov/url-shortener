@@ -30,8 +30,14 @@ public class TagServiceImpl implements TagService {
 
     @Override
     @Transactional
+    public void delete(Long id) {
+        tagDao.delete(id);
+    }
+    
+    @Override
+    @Transactional
     public void delete(Tag tag) {
-        tagDao.delete(tag);
+        tagDao.delete(tag.getId());
     }
 
     @Override
@@ -45,4 +51,5 @@ public class TagServiceImpl implements TagService {
     public void update(Tag tag) {
         tagDao.update(tag);
     }
+
 }
