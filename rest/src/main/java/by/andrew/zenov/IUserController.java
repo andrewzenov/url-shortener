@@ -6,9 +6,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-/**
- * Created by Андрей on 10.03.2016.
- */
 public interface IUserController {
 
 	public List<User> getUsers();
