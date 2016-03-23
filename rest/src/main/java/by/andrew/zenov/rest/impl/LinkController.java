@@ -6,6 +6,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +32,8 @@ public class LinkController implements ILinkController {
 	}
 
 	@Override
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Link getLink(String shortUrl) {
+	@RequestMapping(value = "/{shortUrl}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Link getLink(@PathVariable String shortUrl) {
 		Link link = linkService.get(shortUrl);
 		RestUtil.validation(Link.class, link);
 		return link;
@@ -39,14 +41,15 @@ public class LinkController implements ILinkController {
 
 	@Override
 	@RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json")
-	public ResponseEntity<Link> create(Link link) {
+	public ResponseEntity<Link> create(@RequestBody Link link) {
 		RestUtil.validation(Link.class, link);
 		linkService.insert(link);
 		return new ResponseEntity<Link>(link, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Link> update(String shortUrl, Link link) {
+	@RequestMapping(value = "/{shortUrl}", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public ResponseEntity<Link> update(@PathVariable String shortUrl, @RequestBody Link link) {
 		RestUtil.validation(Link.class, link);
 		link.setShortUrl(shortUrl);
 		linkService.update(link);
@@ -54,7 +57,8 @@ public class LinkController implements ILinkController {
 	}
 
 	@Override
-	public void delete(String shortUrl) {
+	@RequestMapping(value = "/{shortUrl}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public void delete(@PathVariable String shortUrl) {
 		Link link = linkService.get(shortUrl);
 		RestUtil.validation(Link.class, link);
 		linkService.delete(link);
@@ -62,14 +66,16 @@ public class LinkController implements ILinkController {
 	}
 
 	@Override
-	public Set<Tag> getTags(String shortUrl) {
+	@RequestMapping(value = "/{shortUrl}/tags", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Set<Tag> getTags(@PathVariable String shortUrl) {
 		Link link = linkService.get(shortUrl);
 		RestUtil.validation(Link.class, link);
 		return link.getTags();
 	}
 
 	@Override
-	public ResponseEntity<Link> addTag(String shortUrl, Tag tag) {
+	@RequestMapping(value = "/{shortUrl}/tags", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<Link> addTag(@PathVariable String shortUrl, @RequestBody Tag tag) {
 		Link link = linkService.get(shortUrl);
 		RestUtil.validation(Link.class, link);
 		RestUtil.validation(Tag.class, tag);
