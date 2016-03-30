@@ -10,9 +10,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Андрей on 26.02.2016.
- */
 public abstract class AbstractDao<T, K> implements Dao<T, K> {
 
 	@PersistenceContext

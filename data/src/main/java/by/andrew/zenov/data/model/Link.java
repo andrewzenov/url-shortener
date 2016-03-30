@@ -1,94 +1,105 @@
 package by.andrew.zenov.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 public class Link implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "short_url", length = 10)
-	private String shortUrl;
+    @Id
+    @Column(name = "short_url", length = 10)
+    private String shortUrl;
 
-	@Column(name = "source_url", nullable = false, length = 1000)
-	private String sourceUrl;
+    @Column(name = "source_url", nullable = false, length = 1000)
+    private String sourceUrl;
 
-	@Column(name = "description", nullable = true, length = 10000)
-	private String description;
+    @Column(name = "description", nullable = true, length = 10000)
+    private String description;
 
-	@Column(name = "click_count", nullable = true)
-	private Long clickCount;
+    @Column(name = "click_count", nullable = true)
+    private Long clickCount;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tag_link", joinColumns = @JoinColumn(name = "short_url") , inverseJoinColumns = @JoinColumn(name = "tag_id") )
-	private Set<Tag> tags;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
-	public String getShortUrl() {
-		return shortUrl;
-	}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tag_link", joinColumns = @JoinColumn(name = "short_url"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JsonIgnoreProperties(value = {"id"})
+    private Set<Tag> tags;
 
-	public void setShortUrl(String shortUrl) {
-		this.shortUrl = shortUrl;
-	}
+    public String getShortUrl() {
+        return shortUrl;
+    }
 
-	public String getSourceUrl() {
-		return sourceUrl;
-	}
+    public void setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+    }
 
-	public void setSourceUrl(String sourceUrl) {
-		this.sourceUrl = sourceUrl;
-	}
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Long getClickCount() {
-		return clickCount;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setClickCount(Long clickCount) {
-		this.clickCount = clickCount;
-	}
+    public Long getClickCount() {
+        return clickCount;
+    }
 
-	public Set<Tag> getTags() {
-		return tags;
-	}
+    public void setClickCount(Long clickCount) {
+        this.clickCount = clickCount;
+    }
 
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Link link = (Link) o;
-		return com.google.common.base.Objects.equal(shortUrl, link.shortUrl) &&
-				com.google.common.base.Objects.equal(sourceUrl, link.sourceUrl) &&
-				com.google.common.base.Objects.equal(description, link.description) &&
-				com.google.common.base.Objects.equal(clickCount, link.clickCount) &&
-				com.google.common.base.Objects.equal(tags, link.tags);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Link link = (Link) o;
+        return com.google.common.base.Objects.equal(shortUrl, link.shortUrl) &&
+                com.google.common.base.Objects.equal(sourceUrl, link.sourceUrl) &&
+                com.google.common.base.Objects.equal(description, link.description) &&
+                com.google.common.base.Objects.equal(clickCount, link.clickCount) &&
+                com.google.common.base.Objects.equal(tags, link.tags);
+    }
 
-	@Override
-	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(shortUrl, sourceUrl, description, clickCount, tags);
-	}
+    @Override
+    public int hashCode() {
+        return com.google.common.base.Objects.hashCode(shortUrl, sourceUrl, description, clickCount, tags);
+    }
 }
