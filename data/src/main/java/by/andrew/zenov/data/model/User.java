@@ -1,9 +1,11 @@
 package by.andrew.zenov.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -22,14 +24,15 @@ public class User implements Serializable {
     private String login;
 
     @Column(name = "password", nullable = false, length = 40)
+    @JsonIgnore
     private String password;
 
     @Column(name = "email", nullable = false, length = 60)
     private String email;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Link> links;
+    private Set<Link> links;
 
     public Long getId() {
         return id;
@@ -63,12 +66,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-
-    public List<Link> getLinks() {
+    public Set<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(Set<Link> links) {
         this.links = links;
     }
 

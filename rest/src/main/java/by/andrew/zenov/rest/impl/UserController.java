@@ -1,7 +1,11 @@
 package by.andrew.zenov.rest.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import by.andrew.zenov.data.model.Link;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +63,15 @@ public class UserController implements IUserController {
         User user = userService.get(id);
         RestUtil.validation(User.class, user, id);
         userService.delete(user);
+    }
+
+    @Override
+    @RequestMapping(value = "/{id}/links", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Set<Link> getUserLinks(@PathVariable Long id) {
+        User user = userService.get(id);
+        RestUtil.validation(User.class, user, id);
+        Set<Link> links = user.getLinks();
+        return links;
     }
 
 }

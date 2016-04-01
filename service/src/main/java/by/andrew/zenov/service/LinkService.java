@@ -13,6 +13,8 @@ public interface LinkService {
 
     List<Link> getAll();
 
+    List<Link> getLinksByTag(Long tagId);
+
     void delete(String shortUrl);
     
     void delete(Link link);

@@ -1,22 +1,19 @@
 package by.andrew.zenov.rest.impl;
 
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import by.andrew.zenov.ILinkController;
 import by.andrew.zenov.data.model.Link;
 import by.andrew.zenov.data.model.Tag;
+import by.andrew.zenov.data.model.User;
 import by.andrew.zenov.service.LinkService;
+import by.andrew.zenov.service.UserService;
 import by.andrew.zenov.util.RestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController(value = "linkController")
 @RequestMapping("/links")
@@ -25,10 +22,19 @@ public class LinkController implements ILinkController {
     @Autowired
     private LinkService linkService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     @RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
     public List<Link> getLinks() {
         return linkService.getAll();
+    }
+
+    @Override
+    @RequestMapping(value = "tag/{tagId}", method = RequestMethod.GET, headers = "Accept=application/json")
+    public List<Link> getLinksByTag(@PathVariable Long tagId) {
+        return linkService.getLinksByTag(tagId);
     }
 
     @Override
@@ -37,6 +43,14 @@ public class LinkController implements ILinkController {
         Link link = linkService.get(shortUrl);
         RestUtil.validation(Link.class, link);
         return link;
+    }
+
+    @Override
+    @RequestMapping(value = "/{shortUrl}/user", method = RequestMethod.GET, headers = "Accept=application/json")
+    public User getUser(@PathVariable String shortUrl) {
+        Link link = linkService.get(shortUrl);
+        RestUtil.validation(Link.class, link);
+        return link.getUser();
     }
 
     @Override

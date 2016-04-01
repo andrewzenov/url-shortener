@@ -27,14 +27,13 @@ public class Link implements Serializable {
     @Column(name = "click_count", nullable = true)
     private Long clickCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tag_link", joinColumns = @JoinColumn(name = "short_url"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @JsonIgnoreProperties(value = {"id"})
     private Set<Tag> tags;
 
     public String getShortUrl() {

@@ -6,6 +6,7 @@ import by.andrew.zenov.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.List;
 
@@ -49,4 +50,8 @@ public class UserServiceImpl implements UserService {
 		userDao.update(user);
 	}
 
+	@Override
+	public String encryption(String source) {
+		return DigestUtils.md5Hex(source);
+	}
 }

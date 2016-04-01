@@ -17,6 +17,10 @@ public abstract class AbstractDao<T, K> implements Dao<T, K> {
 
 	private Class<T> entityClass;
 
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
+
 	public void setEntityClass(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}

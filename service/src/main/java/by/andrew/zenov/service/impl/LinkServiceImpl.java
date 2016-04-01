@@ -15,40 +15,45 @@ import java.util.List;
 @Service(value = "linkService")
 public class LinkServiceImpl implements LinkService {
 
-	@Autowired
-	private LinkDao linkDao;
+    @Autowired
+    private LinkDao linkDao;
 
-	@Override
-	public Link get(String shortUrl) {
-		return linkDao.get(shortUrl);
-	}
+    @Override
+    public Link get(String shortUrl) {
+        return linkDao.get(shortUrl);
+    }
 
-	@Override
-	public List<Link> getAll() {
-		return linkDao.getAll();
-	}
+    @Override
+    public List<Link> getAll() {
+        return linkDao.getAll();
+    }
 
-	@Override
-	@Transactional
-	public void delete(String shortUrl) {
-		linkDao.delete(shortUrl);
-	}
+    @Override
+    public List<Link> getLinksByTag(Long tagId) {
+        return linkDao.getLinksByTag(tagId);
+    }
 
-	@Override
-	@Transactional
-	public void delete(Link link) {
-		linkDao.delete(link.getShortUrl());
-	}
+    @Override
+    @Transactional
+    public void delete(String shortUrl) {
+        linkDao.delete(shortUrl);
+    }
 
-	@Override
-	@Transactional
-	public void insert(Link link) {
-		linkDao.insert(link);
-	}
+    @Override
+    @Transactional
+    public void delete(Link link) {
+        linkDao.delete(link.getShortUrl());
+    }
 
-	@Override
-	@Transactional
-	public void update(Link link) {
-		linkDao.update(link);
-	}
+    @Override
+    @Transactional
+    public void insert(Link link) {
+        linkDao.insert(link);
+    }
+
+    @Override
+    @Transactional
+    public void update(Link link) {
+        linkDao.update(link);
+    }
 }

@@ -3,6 +3,7 @@ package by.andrew.zenov;
 import java.util.List;
 import java.util.Set;
 
+import by.andrew.zenov.data.model.User;
 import org.springframework.http.ResponseEntity;
 
 import by.andrew.zenov.data.model.Link;
@@ -12,7 +13,11 @@ public interface ILinkController {
 
 	public List<Link> getLinks();
 
+	public List<Link> getLinksByTag(Long tagId);
+
 	public Link getLink(String shortUrl);
+
+	public User getUser(String shortUrl);
 
 	public ResponseEntity<Link> create(Link link);
 
