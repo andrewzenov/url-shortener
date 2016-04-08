@@ -5,6 +5,7 @@ import by.andrew.zenov.data.model.Link;
 import by.andrew.zenov.data.model.Tag;
 import by.andrew.zenov.data.model.User;
 import by.andrew.zenov.service.LinkService;
+import by.andrew.zenov.service.TagService;
 import by.andrew.zenov.service.UserService;
 import by.andrew.zenov.util.RestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class LinkController implements ILinkController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TagService tagService;
 
     @Override
     @RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
@@ -89,13 +93,24 @@ public class LinkController implements ILinkController {
 
     @Override
     @RequestMapping(value = "/{shortUrl}/tags", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<Link> addTag(@PathVariable String shortUrl, @RequestBody Tag tag) {
+    public ResponseEntity<Set<Tag>> addTag(@PathVariable String shortUrl, @RequestBody Tag tag) {
         Link link = linkService.get(shortUrl);
         RestUtil.validation(Link.class, link);
         RestUtil.validation(Tag.class, tag);
-        link.getTags().add(tag);
+        link.getTags().add(tagService.get(tag.getId()));
         linkService.update(link);
-        return new ResponseEntity<Link>(link, HttpStatus.OK);
+        return new ResponseEntity<>(link.getTags(), HttpStatus.OK);
+    }
+
+    @Override
+    @RequestMapping(value = "/{shortUrl}/tags", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    public ResponseEntity<Set<Tag>> deleteTag(@PathVariable String shortUrl, @RequestBody Tag tag) {
+        Link link = linkService.get(shortUrl);
+        RestUtil.validation(Link.class, link);
+        RestUtil.validation(Tag.class, tag);
+        link.getTags().remove(tagService.get(tag.getId()));
+        linkService.update(link);
+        return new ResponseEntity<>(link.getTags(), HttpStatus.OK);
     }
 
 }

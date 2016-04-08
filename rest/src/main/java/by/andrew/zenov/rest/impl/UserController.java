@@ -1,24 +1,17 @@
 package by.andrew.zenov.rest.impl;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import by.andrew.zenov.data.model.Link;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import by.andrew.zenov.IUserController;
+import by.andrew.zenov.data.model.Link;
 import by.andrew.zenov.data.model.User;
 import by.andrew.zenov.service.UserService;
 import by.andrew.zenov.util.RestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController(value = "userController")
 @RequestMapping("/users")
@@ -36,6 +29,7 @@ public class UserController implements IUserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         RestUtil.validation(User.class, user);
+        user.setId(null);
         userService.insert(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

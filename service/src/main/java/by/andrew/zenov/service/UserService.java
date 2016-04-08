@@ -18,6 +18,4 @@ public interface UserService {
 
     void update(User user);
 
-    String encryption(String source);
-
 }

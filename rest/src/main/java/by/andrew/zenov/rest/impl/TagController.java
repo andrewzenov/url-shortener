@@ -49,6 +49,7 @@ public class TagController implements ITagController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<Tag> createUser(@RequestBody Tag tag) {
 		RestUtil.validation(Tag.class, tag);
+		tag.setId(null);
 		tagService.insert(tag);
 		return new ResponseEntity<Tag>(tag, HttpStatus.OK);
 	}

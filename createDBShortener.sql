@@ -28,8 +28,14 @@ CREATE TABLE IF NOT EXISTS `shortener`.`link` (
   `short_url` VARCHAR(10) NOT NULL COMMENT '',
   `source_url` VARCHAR(1000) NOT NULL COMMENT '',
   `description` VARCHAR(10000) NULL COMMENT '',
-  `click_count` BIGINT NULL COMMENT '',
+  `click_count` BIGINT NOT NULL DEFAULT 0 COMMENT '',
+  `user_id` BIGINT NULL COMMENT '',
   PRIMARY KEY (`short_url`)  COMMENT '',
+  CONSTRAINT `fk_link_user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `shortener`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   UNIQUE INDEX `short_url_UNIQUE` (`short_url` ASC)  COMMENT '')
 ENGINE = InnoDB;
 

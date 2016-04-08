@@ -11,22 +11,24 @@ import by.andrew.zenov.data.model.Tag;
 
 public interface ILinkController {
 
-	public List<Link> getLinks();
+    public List<Link> getLinks();
 
-	public List<Link> getLinksByTag(Long tagId);
+    public List<Link> getLinksByTag(Long tagId);
 
-	public Link getLink(String shortUrl);
+    public Link getLink(String shortUrl);
 
-	public User getUser(String shortUrl);
+    public User getUser(String shortUrl);
 
-	public ResponseEntity<Link> create(Link link);
+    public ResponseEntity<Link> create(Link link);
 
-	public ResponseEntity<Link> update(String shortUrl, Link link);
+    public ResponseEntity<Link> update(String shortUrl, Link link);
 
-	public void delete(String shortUrl);
+    public void delete(String shortUrl);
 
-	public Set<Tag> getTags(String shortUrl);
+    public Set<Tag> getTags(String shortUrl);
 
-	public ResponseEntity<Link> addTag(String shortUrl, Tag tag);
+    public ResponseEntity<Set<Tag>> addTag(String shortUrl, Tag tag);
+
+    public ResponseEntity<Set<Tag>> deleteTag(String shortUrl, Tag tag);
 
 }

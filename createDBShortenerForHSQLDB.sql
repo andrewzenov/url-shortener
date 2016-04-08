@@ -15,7 +15,13 @@ CREATE TABLE shortener.link (
   short_url LONGVARCHAR (10) NOT NULL  PRIMARY KEY,
   source_url LONGVARCHAR (1000) NOT NULL,
   description LONGVARCHAR (10000) NULL  ,
-  click_count BIGINT NULL  )
+  click_count BIGINT NOT NULL ,
+  user_id BIGINT NOT NULL,
+  CONSTRAINT fk_link_tag
+    FOREIGN KEY (user_id)
+    REFERENCES shortener.user (user_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 
 CREATE TABLE shortener.tag_link (
   tag_id BIGINT NOT NULL  ,
