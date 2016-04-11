@@ -12,7 +12,7 @@
 
 	<import resource="classpath:data-spring-context.xml" />
 
-	<context:component-scan base-package="by.andrew.zenov" />
+	<context:component-scan base-package="by.andrew.zenov.service" />
 
 	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
