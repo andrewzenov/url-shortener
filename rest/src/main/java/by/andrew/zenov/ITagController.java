@@ -14,6 +14,6 @@ public interface ITagController {
 
 	public void delete(Long id);
 
-	public ResponseEntity<Tag> createUser(Tag tag);
+	public ResponseEntity<Tag> createTag(Tag tag);
 
 }

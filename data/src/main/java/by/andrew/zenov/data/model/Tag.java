@@ -48,4 +48,12 @@ public class Tag implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id, title);
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

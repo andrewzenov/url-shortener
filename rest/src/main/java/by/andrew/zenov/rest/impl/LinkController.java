@@ -6,7 +6,6 @@ import by.andrew.zenov.data.model.Tag;
 import by.andrew.zenov.data.model.User;
 import by.andrew.zenov.service.LinkService;
 import by.andrew.zenov.service.TagService;
-import by.andrew.zenov.service.UserService;
 import by.andrew.zenov.util.RestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +21,6 @@ public class LinkController implements ILinkController {
 
     @Autowired
     private LinkService linkService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private TagService tagService;
@@ -59,7 +55,7 @@ public class LinkController implements ILinkController {
 
     @Override
     @RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<Link> create(@RequestBody Link link) {
+    public ResponseEntity<Link> createLink(@RequestBody Link link) {
         RestUtil.validation(Link.class, link);
         linkService.insert(link);
         return new ResponseEntity<Link>(link, HttpStatus.OK);

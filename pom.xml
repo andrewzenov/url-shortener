@@ -23,7 +23,6 @@
         <module>data</module>
         <module>service</module>
         <module>rest</module>
-        <module>webapp</module>
     </modules>
 
     <dependencyManagement>
@@ -45,12 +44,6 @@
                 <artifactId>rest</artifactId>
                 <version>1.0.0</version>
             </dependency>
-            <dependency>
-                <groupId>by.andrew.zenov</groupId>
-                <artifactId>webapp</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>

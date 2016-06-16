@@ -1,31 +1,26 @@
 package by.andrew.zenov.rest;
 
 import by.andrew.zenov.data.model.Tag;
-import by.andrew.zenov.service.TagService;
+import by.andrew.zenov.rest.impl.TagController;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by Андрей on 05.04.2016.
@@ -33,30 +28,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ContextConfiguration(locations = "classpath:rest-spring-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 public class TagControllerTest {
 
-    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+    private static MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype());
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private TagService tagServiceMock;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+    @Mock
+    private TagController tagServiceMock;
 
     private List<Tag> tagList;
 
-
     @Before
     public void setup() throws Exception {
-        tagServiceMock = Mockito.mock(TagService.class);
-        Mockito.reset(tagServiceMock);
 
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MockitoAnnotations.initMocks(this);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(tagServiceMock).build();
 
         tagList = new ArrayList<>();
 
@@ -76,16 +65,29 @@ public class TagControllerTest {
         tagList.add(tag2);
         tagList.add(tag3);
 
-        when(tagServiceMock.getAll()).thenReturn(tagList);
+        Tag tag4 = new Tag();
+        tag4.setId(4L);
+        tag4.setTitle("fourth-tag");
+
+        when(tagServiceMock.getTags()).thenReturn(tagList);
+
+        when(tagServiceMock.getTag(0L)).thenReturn(tagList.get(0));
+        when(tagServiceMock.getTag(1L)).thenReturn(tagList.get(1));
+        when(tagServiceMock.getTag(2L)).thenReturn(tagList.get(2));
+
+        doNothing().when(tagServiceMock).delete(anyLong());
+
+//        when(tagServiceMock.createTag(any())).thenReturn(tag4);
 
     }
 
     @Test
-    public void test() throws Exception {
+    public void getTagsTest() throws Exception {
+
         mockMvc.perform(get("/tags"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect((ResultMatcher) jsonPath("$", 2))
+                .andExpect(jsonPath("$", Matchers.hasSize(3)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].title", is("first-tag")))
                 .andExpect(jsonPath("$[1].id", is(2)))
@@ -93,14 +95,43 @@ public class TagControllerTest {
                 .andExpect(jsonPath("$[2].id", is(3)))
                 .andExpect(jsonPath("$[2].title", is("third-tag")));
 
+        verify(tagServiceMock, times(1)).getTags();
     }
 
-//
-//    protected String json(Object o) throws IOException {
-//        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-//        this.mappingJackson2HttpMessageConverter.write(
-//                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-//        return mockHttpOutputMessage.getBodyAsString();
-//    }
+    @Test
+    public void getTagByIdTest() throws Exception {
+
+        for (int i = 0; i < tagList.size(); i++) {
+            mockMvc.perform(get("/tags/{id}", i))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(contentType))
+                    .andExpect(jsonPath("$.id", is(tagList.get(i).getId().intValue())))
+                    .andExpect(jsonPath("$.title", is(tagList.get(i).getTitle())));
+        }
+
+        verify(tagServiceMock, times(tagList.size())).getTag(anyLong());
+
+    }
+
+    @Test
+    public void deleteTagByIdTest() throws Exception {
+
+        mockMvc.perform(delete("/tags/{id}", anyLong()))
+                .andExpect(status().isOk());
+        verify(tagServiceMock, times(1)).delete(anyLong());
+    }
+
+    @Test
+    public void createTagTest() throws Exception {
+
+        mockMvc.perform(post("/tags/create"))
+                .andReturn();
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(contentType))
+//                .andExpect(jsonPath("$.id", is(4)))
+//                .andExpect(jsonPath("$.title", is("fourth-tag")));
+
+        verify(tagServiceMock, times(1)).createTag(any());
+    }
 
 }

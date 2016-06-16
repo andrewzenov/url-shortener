@@ -19,7 +19,7 @@ public interface ILinkController {
 
     public User getUser(String shortUrl);
 
-    public ResponseEntity<Link> create(Link link);
+    public ResponseEntity<Link> createLink(Link link);
 
     public ResponseEntity<Link> update(String shortUrl, Link link);
 
