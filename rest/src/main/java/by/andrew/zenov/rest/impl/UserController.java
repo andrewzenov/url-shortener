@@ -31,7 +31,7 @@ public class UserController implements IUserController {
         RestUtil.validation(User.class, user);
         user.setId(null);
         userService.insert(user);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UserController implements IUserController {
         RestUtil.validation(User.class, user, id);
         user.setId(id);
         userService.update(user);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Override

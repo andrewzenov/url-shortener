@@ -58,7 +58,7 @@ public class LinkController implements ILinkController {
     public ResponseEntity<Link> createLink(@RequestBody Link link) {
         RestUtil.validation(Link.class, link);
         linkService.insert(link);
-        return new ResponseEntity<Link>(link, HttpStatus.OK);
+        return new ResponseEntity<>(link, HttpStatus.OK);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class LinkController implements ILinkController {
         RestUtil.validation(Link.class, link);
         link.setShortUrl(shortUrl);
         linkService.update(link);
-        return new ResponseEntity<Link>(link, HttpStatus.OK);
+        return new ResponseEntity<>(link, HttpStatus.OK);
     }
 
     @Override

@@ -7,13 +7,14 @@ import org.springframework.http.ResponseEntity;
 import by.andrew.zenov.data.model.Tag;
 
 public interface ITagController {
-	
-	public List<Tag> getTags();
-	
-	public Tag getTag(Long id);
 
-	public void delete(Long id);
+    List<Tag> getTags();
 
-	public ResponseEntity<Tag> createTag(Tag tag);
+    Tag getTag(Long id);
+
+    void delete(Long id);
+
+    ResponseEntity<Tag> createTag(Tag tag);
+
 
 }
